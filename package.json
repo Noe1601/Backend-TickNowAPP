@@ -1,0 +1,24 @@
+{
+  "name": "backend-ticknowapp",
+  "version": "1.0.0",
+  "description": "Backend code of the tickNowAPP",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Noe1601/Backend-TickNowAPP.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Noe1601/Backend-TickNowAPP/issues"
+  },
+  "homepage": "https://github.com/Noe1601/Backend-TickNowAPP#readme",
+  "devDependencies": {
+    "tslint": "^6.1.3",
+    "typescript": "^4.6.2"
+  }
+}
