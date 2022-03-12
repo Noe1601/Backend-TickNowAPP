@@ -29,6 +29,9 @@ const User = db.define('User', {
     state: {
         type: DataTypes.BOOLEAN
     },
+    password: {
+        type: DataTypes.STRING
+    }
 });
 
 export default User;

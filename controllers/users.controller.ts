@@ -1,9 +1,14 @@
 import { Request, Response } from "express";
+import { sendEmail } from "../helpers/send-email";
 import User from "../models/user-model";
 
 export const getUsers = async(req: Request, res: Response) => {
 
-    const users = await User.findAll();
+    const users = await User.findAll({
+        where: {
+            state: 1
+        }
+    });
 
     res.json({
         users
@@ -50,12 +55,17 @@ export const createUser = async(req: Request, res: Response) => {
 
         const user = await User.create(body);
 
-        res.json(user);
+        await sendEmail(body.email,body.name);
+
+        res.json({
+            user,
+        });
         
     } catch (error) {
         res.status(500).json({
             message: 'An unexpected error ocurred.'
-        })
+        });
+        console.log(error);
     }
 
 }
@@ -73,6 +83,22 @@ export const  updateUser = async(req: Request, res: Response) => {
             return res.status(404).json({
                 message: `Not exists an user with this ID`
             });
+        }
+
+        if(body.email != null){
+
+            const emailExists = await User.findOne({
+                where: {
+                    email: body.email
+                }
+            });
+
+            if(emailExists){
+                return res.status(400).json({
+                    message: `Already exists an user with email ${ body.email }, try with another one`
+                });
+            }
+
         }
 
         await user.update( body );

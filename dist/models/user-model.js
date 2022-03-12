@@ -33,6 +33,9 @@ const User = connection_1.default.define('User', {
     state: {
         type: sequelize_1.DataTypes.BOOLEAN
     },
+    password: {
+        type: sequelize_1.DataTypes.STRING
+    }
 });
 exports.default = User;
 //# sourceMappingURL=user-model.js.map
