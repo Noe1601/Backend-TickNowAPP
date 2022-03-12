@@ -1,5 +1,6 @@
 import express, { Application } from 'express';
 import userRouter from '../routes/users.routes';
+import authRouter from '../routes/auth.routes';
 import cors from 'cors';
 import db from '../db/connection';
 
@@ -10,7 +11,8 @@ class Server {
     private port: string;
 
     private paths = {
-        users: '/api/users'
+        users: '/api/users',
+        auth: '/api/auth'
     }
 
     constructor(){
@@ -31,7 +33,8 @@ class Server {
     }
 
     routes(){
-        this.app.use( this.paths.users, userRouter)
+        this.app.use( this.paths.users, userRouter);
+        this.app.use( this.paths.auth, authRouter );
     }
 
     middlewares(){

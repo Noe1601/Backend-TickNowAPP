@@ -13,9 +13,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteUser = exports.updateUser = exports.createUser = exports.getUser = exports.getUsers = void 0;
+const send_email_1 = require("../helpers/send-email");
 const user_model_1 = __importDefault(require("../models/user-model"));
 const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const users = yield user_model_1.default.findAll();
+    const users = yield user_model_1.default.findAll({
+        where: {
+            state: 1
+        }
+    });
     res.json({
         users
     });
@@ -51,12 +56,16 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             });
         }
         const user = yield user_model_1.default.create(body);
-        res.json(user);
+        yield (0, send_email_1.sendEmail)(body.email, body.name);
+        res.json({
+            user,
+        });
     }
     catch (error) {
         res.status(500).json({
             message: 'An unexpected error ocurred.'
         });
+        console.log(error);
     }
 });
 exports.createUser = createUser;
@@ -69,6 +78,18 @@ const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             return res.status(404).json({
                 message: `Not exists an user with this ID`
             });
+        }
+        if (body.email != null) {
+            const emailExists = yield user_model_1.default.findOne({
+                where: {
+                    email: body.email
+                }
+            });
+            if (emailExists) {
+                return res.status(400).json({
+                    message: `Already exists an user with email ${body.email}, try with another one`
+                });
+            }
         }
         yield user.update(body);
         res.json(user);
