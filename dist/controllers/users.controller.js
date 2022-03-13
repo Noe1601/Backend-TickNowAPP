@@ -94,18 +94,6 @@ const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 message: `Not exists an user with this ID`
             });
         }
-        if (body.email != null) {
-            const emailExists = yield user_model_1.default.findOne({
-                where: {
-                    email: body.email
-                }
-            });
-            if (emailExists) {
-                return res.status(400).json({
-                    message: `Already exists an user with email ${body.email}, try with another one`
-                });
-            }
-        }
         yield user.update(body);
         res.json(user);
     }

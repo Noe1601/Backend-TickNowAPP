@@ -105,22 +105,6 @@ export const  updateUser = async(req: Request, res: Response) => {
             });
         }
 
-        if(body.email != null){
-
-            const emailExists = await User.findOne({
-                where: {
-                    email: body.email
-                }
-            });
-
-            if(emailExists){
-                return res.status(400).json({
-                    message: `Already exists an user with email ${ body.email }, try with another one`
-                });
-            }
-
-        }
-
         await user.update( body );
         
         res.json(user);

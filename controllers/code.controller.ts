@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { sendEmail } from "../helpers/send-email";
+import { sendMessages } from "../helpers/send-sms";
 import Code from "../models/code-model";
 
 export const createCodeVerification = async(req: Request, res: Response) => {
@@ -14,11 +15,16 @@ export const createCodeVerification = async(req: Request, res: Response) => {
             code: token
         }
 
-        console.log(tokenObject);
-
         const code = await Code.create(tokenObject);
 
-        await sendEmail(body.email,token.toString());
+        if(body.email){
+            await sendEmail(body.email,token.toString());
+        }
+
+        if(body.phone_number){
+            await sendMessages(body.phone_number,token.toString());
+        }
+
 
         res.json({
             code

@@ -16,6 +16,7 @@ const express_1 = __importDefault(require("express"));
 const users_routes_1 = __importDefault(require("../routes/users.routes"));
 const auth_routes_1 = __importDefault(require("../routes/auth.routes"));
 const code_routes_1 = __importDefault(require("../routes/code.routes"));
+const stablishment_routes_1 = __importDefault(require("../routes/stablishment.routes"));
 const cors_1 = __importDefault(require("cors"));
 const connection_1 = __importDefault(require("../db/connection"));
 class Server {
@@ -24,6 +25,7 @@ class Server {
             users: '/api/users',
             auth: '/api/auth',
             code: '/api/code',
+            stablishment: '/api/stablishment',
         };
         this.app = (0, express_1.default)();
         this.port = process.env.PORT || '8000';
@@ -46,6 +48,7 @@ class Server {
         this.app.use(this.paths.users, users_routes_1.default);
         this.app.use(this.paths.auth, auth_routes_1.default);
         this.app.use(this.paths.code, code_routes_1.default);
+        this.app.use(this.paths.stablishment, stablishment_routes_1.default);
     }
     middlewares() {
         this.app.use((0, cors_1.default)());

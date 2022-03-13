@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createCodeVerification = void 0;
 const send_email_1 = require("../helpers/send-email");
+const send_sms_1 = require("../helpers/send-sms");
 const code_model_1 = __importDefault(require("../models/code-model"));
 const createCodeVerification = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { body } = req;
@@ -22,9 +23,13 @@ const createCodeVerification = (req, res) => __awaiter(void 0, void 0, void 0, f
         const tokenObject = {
             code: token
         };
-        console.log(tokenObject);
         const code = yield code_model_1.default.create(tokenObject);
-        yield (0, send_email_1.sendEmail)(body.email, token.toString());
+        if (body.email) {
+            yield (0, send_email_1.sendEmail)(body.email, token.toString());
+        }
+        if (body.phone_number) {
+            yield (0, send_sms_1.sendMessages)(body.phone_number, token.toString());
+        }
         res.json({
             code
         });

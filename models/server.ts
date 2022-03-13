@@ -2,6 +2,7 @@ import express, { Application } from 'express';
 import userRouter from '../routes/users.routes';
 import authRouter from '../routes/auth.routes';
 import codeRouter from '../routes/code.routes';
+import stablishmentRouter from '../routes/stablishment.routes';
 import cors from 'cors';
 import db from '../db/connection';
 
@@ -15,6 +16,7 @@ class Server {
         users: '/api/users',
         auth: '/api/auth',
         code: '/api/code',
+        stablishment: '/api/stablishment',
     }
 
     constructor(){
@@ -38,6 +40,7 @@ class Server {
         this.app.use( this.paths.users, userRouter);
         this.app.use( this.paths.auth, authRouter );
         this.app.use( this.paths.code, codeRouter );
+        this.app.use( this.paths.stablishment, stablishmentRouter );
     }
 
     middlewares(){
