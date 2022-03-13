@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteUser = exports.updateUser = exports.createUser = exports.getUser = exports.getUsers = void 0;
-const send_email_1 = require("../helpers/send-email");
+const code_model_1 = __importDefault(require("../models/code-model"));
 const user_model_1 = __importDefault(require("../models/user-model"));
 const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const users = yield user_model_1.default.findAll({
@@ -55,8 +55,23 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 message: `Already exists an user with email ${body.email}, try with another one`
             });
         }
+        if (body.code_confirmation == null) {
+            return res.status(400).json({
+                message: 'The token verification is required'
+            });
+        }
+        const verifyToken = yield code_model_1.default.findOne({
+            where: {
+                code: body.code_confirmation
+            }
+        });
+        if (!verifyToken) {
+            return res.status(404).json({
+                ok: false,
+                message: 'This token is invalid, try again.'
+            });
+        }
         const user = yield user_model_1.default.create(body);
-        yield (0, send_email_1.sendEmail)(body.email, body.name);
         res.json({
             user,
         });

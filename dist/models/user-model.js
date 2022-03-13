@@ -35,6 +35,12 @@ const User = connection_1.default.define('User', {
     },
     password: {
         type: sequelize_1.DataTypes.STRING
+    },
+    code_confirmation: {
+        type: sequelize_1.DataTypes.STRING
+    },
+    account_confirmed: {
+        type: sequelize_1.DataTypes.BOOLEAN
     }
 });
 exports.default = User;

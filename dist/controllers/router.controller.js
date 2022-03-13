@@ -12,32 +12,28 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendEmail = void 0;
-const nodemailer_1 = __importDefault(require("nodemailer"));
-const sendEmail = (email, code) => __awaiter(void 0, void 0, void 0, function* () {
-    let transporter = nodemailer_1.default.createTransport({
-        host: "smtp.gmail.com",
-        port: 465,
-        secure: true,
-        auth: {
-            user: "noeeduardomedinahenriquez@gmail.com",
-            pass: "evhuqsxkvmptzhnd",
-        },
-    });
-    yield transporter.sendMail({
-        from: 'noeeduardomedinahenriquez@gmail.com',
-        to: `${email}`,
-        subject: `Welcome ✔`,
-        html: `
-        <h3>
-        Hello, welcome to tickNowAPP family.
-        <br>
-        Thanks for using the application, I hope you feel comfortable. ✔ 
-        <br>
-        Your verification code is: ${code}
-        </h3>
-    `
-    });
+exports.createCodeVerification = void 0;
+const send_email_1 = require("../helpers/send-email");
+const code_model_1 = __importDefault(require("../models/code-model"));
+const createCodeVerification = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { body } = req;
+    try {
+        const token = Math.floor(100000 + Math.random() * 900000);
+        const tokenObject = {
+            token
+        };
+        const code = yield code_model_1.default.create(tokenObject);
+        yield (0, send_email_1.sendEmail)(body.email, token.toString());
+        res.json({
+            code
+        });
+    }
+    catch (error) {
+        res.status(500).json({
+            message: 'An unexpected error ocurred.'
+        });
+        console.log(error);
+    }
 });
-exports.sendEmail = sendEmail;
-//# sourceMappingURL=send-email.js.map
+exports.createCodeVerification = createCodeVerification;
+//# sourceMappingURL=router.controller.js.map

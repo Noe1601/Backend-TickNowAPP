@@ -1,8 +1,6 @@
 import nodemailer from 'nodemailer';
 
-export const sendEmail = async(email: string, name: string) => {
-
-let testAccount = await nodemailer.createTestAccount();
+export const sendEmail = async(email: string, code: string) => {
 
 let transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
@@ -20,8 +18,11 @@ let transporter = nodemailer.createTransport({
     subject: `Welcome ✔`,
     html: `
         <h3>
-        Hello ${ name }, welcome to tickNowAPP family.
+        Hello, welcome to tickNowAPP family.
+        <br>
         Thanks for using the application, I hope you feel comfortable. ✔ 
+        <br>
+        Your verification code is: ${ code }
         </h3>
     `
   });
