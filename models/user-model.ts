@@ -31,6 +31,12 @@ const User = db.define('User', {
     },
     password: {
         type: DataTypes.STRING
+    },
+    code_confirmation: {
+        type: DataTypes.STRING
+    },
+    account_confirmed: {
+        type: DataTypes.BOOLEAN
     }
 });
 

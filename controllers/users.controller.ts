@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
+import { BulkRecordError } from "sequelize/types";
 import { sendEmail } from "../helpers/send-email";
+import Code from "../models/code-model";
 import User from "../models/user-model";
 
 export const getUsers = async(req: Request, res: Response) => {
@@ -53,9 +55,27 @@ export const createUser = async(req: Request, res: Response) => {
             });
         }
 
-        const user = await User.create(body);
 
-        await sendEmail(body.email,body.name);
+        if(body.code_confirmation == null){
+            return res.status(400).json({
+                message: 'The token verification is required'
+            })
+        }
+
+        const verifyToken = await Code.findOne({
+            where: {
+                code: body.code_confirmation
+            }
+        })
+
+        if(!verifyToken){
+            return res.status(404).json({
+                ok: false,
+                message: 'This token is invalid, try again.'
+            })
+        }
+
+        const user = await User.create(body);
 
         res.json({
             user,
