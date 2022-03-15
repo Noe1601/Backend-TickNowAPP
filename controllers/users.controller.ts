@@ -135,3 +135,56 @@ export const deleteUser = async(req: Request, res: Response) => {
     });
 
 }
+
+
+export const recuperatePassword = async(req: Request, res: Response) => {
+
+    const { body } = req;
+
+    try {
+
+        const user = await User.findOne({ 
+            where: {
+                email: body.email
+            }
+        });
+
+        if(!user){
+            return res.status(404).json({
+                message: `This email is invalid`
+            });
+        }
+
+        if(body.code_confirmation == null){
+            return res.status(400).json({
+                message: 'The token verification is required'
+            })
+        }
+
+        const verifyToken = await Code.findOne({
+            where: {
+                code: body.code_confirmation
+            }
+        })
+
+        if(!verifyToken){
+            return res.status(404).json({
+                ok: false,
+                message: 'This token is invalid, try again.'
+            })
+        }
+
+        await user.update( body );
+        
+        res.json({
+            ok: true,
+            message: 'Password updated'
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: 'An unexpected error ocurred.'
+        })
+    }
+}

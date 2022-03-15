@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.updateUser = exports.createUser = exports.getUser = exports.getUsers = void 0;
+exports.recuperatePassword = exports.deleteUser = exports.updateUser = exports.createUser = exports.getUser = exports.getUsers = void 0;
 const code_model_1 = __importDefault(require("../models/code-model"));
 const user_model_1 = __importDefault(require("../models/user-model"));
 const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -118,4 +118,47 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     });
 });
 exports.deleteUser = deleteUser;
+const recuperatePassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { body } = req;
+    try {
+        const user = yield user_model_1.default.findOne({
+            where: {
+                email: body.email
+            }
+        });
+        if (!user) {
+            return res.status(404).json({
+                message: `This email is invalid`
+            });
+        }
+        if (body.code_confirmation == null) {
+            return res.status(400).json({
+                message: 'The token verification is required'
+            });
+        }
+        const verifyToken = yield code_model_1.default.findOne({
+            where: {
+                code: body.code_confirmation
+            }
+        });
+        if (!verifyToken) {
+            return res.status(404).json({
+                ok: false,
+                message: 'This token is invalid, try again.'
+            });
+        }
+        yield user.update(body);
+        res.json({
+            ok: true,
+            message: 'Password updated'
+        });
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: 'An unexpected error ocurred.'
+        });
+    }
+});
+exports.recuperatePassword = recuperatePassword;
 //# sourceMappingURL=users.controller.js.map
