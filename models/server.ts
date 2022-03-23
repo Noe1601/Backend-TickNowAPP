@@ -3,6 +3,7 @@ import userRouter from '../routes/users.routes';
 import authRouter from '../routes/auth.routes';
 import codeRouter from '../routes/code.routes';
 import stablishmentRouter from '../routes/stablishment.routes';
+import workerRouter from '../routes/worker.routes';
 import cors from 'cors';
 import db from '../db/connection';
 
@@ -17,6 +18,7 @@ class Server {
         auth: '/api/auth',
         code: '/api/code',
         stablishment: '/api/stablishment',
+        workers: '/api/workers'
     }
 
     constructor(){
@@ -41,6 +43,7 @@ class Server {
         this.app.use( this.paths.auth, authRouter );
         this.app.use( this.paths.code, codeRouter );
         this.app.use( this.paths.stablishment, stablishmentRouter );
+        this.app.use( this.paths.workers, workerRouter );
     }
 
     middlewares(){
