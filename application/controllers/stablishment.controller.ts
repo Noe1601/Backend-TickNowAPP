@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import Code from "../models/code-model";
-import Stablishment from "../models/stablishment-model";
+import Code from "../../domain/models/code-model";
+import Stablishment from "../../domain/models/stablishment-model";
 
 export const getStablisments = async(req: Request, res: Response) => {
 

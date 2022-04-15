@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { sendEmail } from "../helpers/send-email";
-import { sendMessages } from "../helpers/send-sms";
-import Code from "../models/code-model";
+import { sendEmail } from "../../infraestructure/helpers/send-email";
+import { sendMessages } from "../../infraestructure/helpers/send-sms";
+import Code from "../../domain/models/code-model";
 
 export const createCodeVerification = async(req: Request, res: Response) => {
 

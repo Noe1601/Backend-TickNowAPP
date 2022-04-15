@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { activatedStablishment, createStablishment, deleteStableshiment, getStablishment, getStablisments, updateStablishment } from '../controllers/stablishment.controller';
+import { activatedStablishment, createStablishment, deleteStableshiment, getStablishment, getStablisments, updateStablishment } from '../../application/controllers/stablishment.controller';
 
 const router = Router();
 
