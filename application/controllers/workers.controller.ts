@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import Code from "../models/code-model";
-import Worker from "../models/workers-model";
+import Code from "../../domain/models/code-model";
+import Worker from "../../domain/models/workers-model";
 
 
 export const getWorkers = async(req: Request, res: Response) => {

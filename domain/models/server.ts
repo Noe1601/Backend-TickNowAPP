@@ -1,9 +1,9 @@
 import express, { Application } from 'express';
-import userRouter from '../routes/users.routes';
-import authRouter from '../routes/auth.routes';
-import codeRouter from '../routes/code.routes';
-import stablishmentRouter from '../routes/stablishment.routes';
-import workerRouter from '../routes/worker.routes';
+import userRouter from '../../infraestructure/routes/users.routes';
+import authRouter from '../../infraestructure/routes/auth.routes';
+import codeRouter from '../../infraestructure/routes/code.routes';
+import stablishmentRouter from '../../infraestructure/routes/stablishment.routes';
+import workerRouter from '../../infraestructure/routes/worker.routes';
 import cors from 'cors';
 import db from '../db/connection';
 
@@ -32,7 +32,6 @@ class Server {
     async dbConnection(){
         try {
             await db.authenticate();
-            console.log('Database online');
         } catch (error) {
             throw new Error('Error');
         }
@@ -52,11 +51,6 @@ class Server {
         this.app.use( express.static('public') );
     }
     
-    listen(){
-        this.app.listen( this.port, () => {
-            console.log(`Servidor corriendo en puerto ${ this.port }`);
-        })
-    }
 }
 
 

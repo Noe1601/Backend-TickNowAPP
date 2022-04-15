@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { BulkRecordError } from "sequelize/types";
-import { sendEmail } from "../helpers/send-email";
-import Code from "../models/code-model";
-import User from "../models/user-model";
+import { sendEmail } from "../../infraestructure/helpers/send-email";
+import Code from "../../domain/models/code-model";
+import User from "../../domain/models/user-model";
 
 export const getUsers = async(req: Request, res: Response) => {
 

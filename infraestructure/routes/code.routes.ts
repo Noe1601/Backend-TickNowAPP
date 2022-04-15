@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createCodeVerification } from "../controllers/code.controller";
+import { createCodeVerification } from "../../application/controllers/code.controller";
 
 const router = Router();
 
